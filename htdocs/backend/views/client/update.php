@@ -3,9 +3,9 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Languages */
+/* @var $model common\models\Clients */
 ?>
-<div class="languages-update">
+<div class="clients-update">
 
     <?= $this->render('_form', [
         'model' => $model,

@@ -4,10 +4,10 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Languages */
+/* @var $model common\models\Clients */
 
 ?>
-<div class="languages-create">
+<div class="clients-create">
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>

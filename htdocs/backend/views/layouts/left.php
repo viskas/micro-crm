@@ -1,6 +1,10 @@
 <?php
 use mdm\admin\components\Helper;
 use mdm\admin\components\MenuHelper;
+
+$role = \backend\models\AuthAssignment::findOne(['user_id' => Yii::$app->user->identity->id]);
+
+$is_manager = isset($role->item_name) && $role->item_name == 'Менеджер' ? true : false;
 ?>
 
 <aside class="main-sidebar">
@@ -29,6 +33,7 @@ use mdm\admin\components\MenuHelper;
                         ['label' => 'Распределение прав', 'icon' => 'superpowers', 'url' => ['/admin/role']],
                     ],
                 ],
+                $is_manager ? ['label' => 'Мои клиенты', 'icon' => 'id-card-o', 'url' => ['/client/index']] : [],
             ];
 
             $menuItems = Helper::filter($menuItems);
