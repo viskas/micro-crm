@@ -34,6 +34,7 @@ $is_manager = isset($role->item_name) && $role->item_name == 'Менеджер' 
                     ],
                 ],
                 $is_manager ? ['label' => 'Мои клиенты', 'icon' => 'id-card-o', 'url' => ['/client/index']] : [],
+                ['label' => 'Клиенты', 'icon' => 'id-card-o', 'url' => ['/admin-client/index']]
             ];
 
             $menuItems = Helper::filter($menuItems);
