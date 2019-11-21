@@ -68,6 +68,23 @@ class AdminClientController extends Controller
         ]);
     }
 
+    public function actionDelete($id)
+    {
+        $request = Yii::$app->request;
+        $model = $this->findModel($id);
+
+        if ($model->delete()) {
+            Yii::$app->session->setFlash('success', 'Клиент удален');
+        }
+
+        if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
+        }else{
+            return $this->redirect(['index']);
+        }
+    }
+
     protected function findModel($id)
     {
         if (($model = Clients::findOne($id)) !== null) {
