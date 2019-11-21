@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 21 2019 г., 21:01
+-- Время создания: Ноя 21 2019 г., 23:46
 -- Версия сервера: 5.7.19
 -- Версия PHP: 7.1.7
 
@@ -40,7 +40,8 @@ CREATE TABLE `auth_assignment` (
 
 INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
 ('Администратор', '1', 1525161228),
-('Менеджер', '2', 1602420624);
+('Менеджер', '2', 1602420624),
+('Менеджер', '3', 1602387827);
 
 -- --------------------------------------------------------
 
@@ -65,6 +66,7 @@ CREATE TABLE `auth_item` (
 INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `created_at`, `updated_at`) VALUES
 ('/*', 2, NULL, NULL, NULL, 1525320643, 1525320643),
 ('/admin/*', 2, NULL, NULL, NULL, 1525317811, 1525317811),
+('/client/*', 2, NULL, NULL, NULL, 1574361268, 1574361268),
 ('/clients/*', 2, NULL, NULL, NULL, 1525765253, 1525765253),
 ('/contact-us/*', 2, NULL, NULL, NULL, 1526293230, 1526293230),
 ('/department/*', 2, NULL, NULL, NULL, 1526296586, 1526296586),
@@ -73,35 +75,30 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 ('/languages/*', 2, NULL, NULL, NULL, 1526554241, 1526554241),
 ('/managers/*', 2, NULL, NULL, NULL, 1525324237, 1525324237),
 ('/news/*', 2, NULL, NULL, NULL, 1525409620, 1525409620),
+('/noty/*', 2, NULL, NULL, NULL, 1574361224, 1574361224),
 ('/pages/manager/*', 2, NULL, NULL, NULL, 1525341423, 1525341423),
 ('/pay-method/*', 2, NULL, NULL, NULL, 1526897012, 1526897012),
+('/personal/*', 2, NULL, NULL, NULL, 1574361261, 1574361261),
 ('/profile/*', 2, NULL, NULL, NULL, 1525317549, 1525317549),
+('/profile/change-password', 2, NULL, NULL, NULL, 1574361278, 1574361278),
+('/profile/index', 2, NULL, NULL, NULL, 1574361278, 1574361278),
+('/profile/qr-code', 2, NULL, NULL, NULL, 1574361278, 1574361278),
+('/profile/qr-code-disable', 2, NULL, NULL, NULL, 1574361278, 1574361278),
 ('/promo-code/*', 2, NULL, NULL, NULL, 1525317636, 1525317636),
 ('/request/*', 2, NULL, NULL, NULL, 1526354389, 1526354389),
 ('/settings/delete-news-size', 2, NULL, NULL, NULL, 1525403921, 1525403921),
 ('/settings/news', 2, NULL, NULL, NULL, 1525403921, 1525403921),
 ('/site/*', 2, NULL, NULL, NULL, 1526477285, 1526477285),
+('/site/error', 2, NULL, NULL, NULL, 1574361299, 1574361299),
 ('/users/*', 2, NULL, NULL, NULL, 1525320569, 1525320569),
 ('/withdrawal/*', 2, NULL, NULL, NULL, 1526896999, 1526896999),
-('Администратор', 1, NULL, NULL, NULL, 1525161007, 1574358116),
-('Вывод средств', 2, NULL, NULL, NULL, 1526897063, 1526897063),
-('Главная страница', 2, NULL, NULL, NULL, 1526477269, 1526477296),
-('Менеджер', 1, NULL, NULL, NULL, 1525161044, 1526477335),
-('Методы оплаты', 2, NULL, NULL, NULL, 1526897043, 1526897043),
-('Настройки новостей', 2, NULL, NULL, NULL, 1525403896, 1526661916),
-('Новости', 2, NULL, NULL, NULL, 1525409608, 1525668321),
-('Обратная связь', 2, NULL, NULL, NULL, 1526292985, 1526293243),
-('Обращения', 2, NULL, NULL, NULL, 1526354373, 1526354398),
-('Общее распределение прав', 2, NULL, NULL, NULL, 1525317796, 1525317817),
-('Отделы', 2, NULL, NULL, NULL, 1526294652, 1526296596),
-('Перевод', 2, NULL, NULL, NULL, 1526554277, 1526554277),
-('Промо-коды', 2, NULL, NULL, NULL, 1525317622, 1525317644),
-('Редактирование профиля', 2, NULL, NULL, NULL, 1525317529, 1525317558),
-('Управление клиентами', 2, NULL, NULL, NULL, 1525765240, 1525765264),
-('Управление менеджерами', 2, NULL, NULL, NULL, 1525320536, 1525324242),
-('Управление менеджерами и администраторами', 2, NULL, NULL, NULL, 1525320558, 1525320661),
-('Управление статическими страницами', 2, NULL, NULL, NULL, 1525341407, 1525674877),
-('Языки', 2, NULL, NULL, NULL, 1526554257, 1526554257);
+('Администратор', 1, NULL, NULL, NULL, 1525161007, 1574361504),
+('Менеджер', 1, NULL, NULL, NULL, 1525161044, 1574361522),
+('Раздел \"Мои клиенты\"', 2, NULL, NULL, NULL, 1574361381, 1574361381),
+('Раздел \"Пользователи\"', 2, NULL, NULL, NULL, 1574361439, 1574361439),
+('Распределение прав', 2, NULL, NULL, NULL, 1574361482, 1574361482),
+('Редактирование своего профиля', 2, NULL, NULL, NULL, 1574361338, 1574361338),
+('Уведомления', 2, NULL, NULL, NULL, 1574361402, 1574361402);
 
 -- --------------------------------------------------------
 
@@ -120,30 +117,14 @@ CREATE TABLE `auth_item_child` (
 
 INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 ('Администратор', '/*'),
-('Общее распределение прав', '/admin/*'),
-('Управление клиентами', '/clients/*'),
-('Обратная связь', '/contact-us/*'),
-('Отделы', '/department/*'),
-('Администратор', '/gii/*'),
-('Перевод', '/i18n/*'),
-('Языки', '/languages/*'),
-('Управление менеджерами', '/managers/*'),
-('Новости', '/news/*'),
-('Управление статическими страницами', '/pages/manager/*'),
-('Методы оплаты', '/pay-method/*'),
-('Редактирование профиля', '/profile/*'),
-('Промо-коды', '/promo-code/*'),
-('Обращения', '/request/*'),
-('Настройки новостей', '/settings/delete-news-size'),
-('Настройки новостей', '/settings/news'),
-('Главная страница', '/site/*'),
-('Управление менеджерами и администраторами', '/users/*'),
-('Вывод средств', '/withdrawal/*'),
-('Менеджер', 'Главная страница'),
-('Менеджер', 'Обратная связь'),
-('Менеджер', 'Обращения'),
-('Менеджер', 'Редактирование профиля'),
-('Менеджер', 'Управление клиентами');
+('Распределение прав', '/admin/*'),
+('Раздел \"Мои клиенты\"', '/client/*'),
+('Уведомления', '/noty/*'),
+('Раздел \"Пользователи\"', '/personal/*'),
+('Редактирование своего профиля', '/profile/*'),
+('Менеджер', 'Раздел \"Мои клиенты\"'),
+('Менеджер', 'Редактирование своего профиля'),
+('Менеджер', 'Уведомления');
 
 -- --------------------------------------------------------
 
@@ -157,6 +138,38 @@ CREATE TABLE `auth_rule` (
   `created_at` int(11) DEFAULT NULL,
   `updated_at` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `clients`
+--
+
+CREATE TABLE `clients` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `platform` varchar(50) DEFAULT NULL,
+  `account_number` varchar(255) DEFAULT NULL,
+  `phone_number` varchar(30) DEFAULT NULL,
+  `additional_phone_number` varchar(30) DEFAULT NULL,
+  `first_name` varchar(30) NOT NULL,
+  `last_name` varchar(30) DEFAULT NULL,
+  `patronymic` varchar(30) DEFAULT NULL,
+  `birthday` date DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `skype` varchar(255) DEFAULT NULL,
+  `team_viewer` varchar(255) DEFAULT NULL,
+  `status` varchar(40) NOT NULL,
+  `additional_info` text,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `clients`
+--
+
+INSERT INTO `clients` (`id`, `user_id`, `platform`, `account_number`, `phone_number`, `additional_phone_number`, `first_name`, `last_name`, `patronymic`, `birthday`, `address`, `skype`, `team_viewer`, `status`, `additional_info`, `created_at`) VALUES
+(2, 2, 'Uxool', '6574859', '+7 912 567-48-95', '+7 912 657-48-95', 'Владимир', 'Кенза', 'Петрович', '2014-11-20', '', 'inokentiy', '769856896', 'В работе', 'Клиент с очень большими деньгами', '2019-11-22 00:20:46');
 
 -- --------------------------------------------------------
 
@@ -554,7 +567,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `first_name`, `last_name`, `username`, `auth_key`, `secret_key`, `password_hash`, `password_reset_token`, `email`, `is_user`, `qr_status`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Администратор', 'Администратор', NULL, 'DyoNBwr75MWepn7jWBzPFMELBogWV5LG', 'MSFWNI65KF7Z64JW', '$2y$13$y.Moj4WP8VtmJGUtuC02FOC6Om4qNdkkqw.vhxP99QE8diYZJgnDO', NULL, 'prybylov.v@gmail.com', 0, 0, 10, 1525159721, 1528427446),
-(2, 'Василий', 'Петров', NULL, 'Xq2UbOBrre6uOuw3Fs9chCs_TVvNieyO', 'EDHEYQO7THCAU5SK', '$2y$13$BOp3CmzOGJSBZe1joWoKn.woYd6bXSmxpF6tD4QUtal8AEGReBEai', NULL, 'pew98905@bcaoo.com', 0, 0, 10, 1574358624, 1574358624);
+(2, 'Василий', 'Петров', NULL, 'Xq2UbOBrre6uOuw3Fs9chCs_TVvNieyO', 'EDHEYQO7THCAU5SK', '$2y$13$BOp3CmzOGJSBZe1joWoKn.woYd6bXSmxpF6tD4QUtal8AEGReBEai', NULL, 'manager@demo.com', 0, 0, 10, 1574358624, 1574358624);
 
 --
 -- Индексы сохранённых таблиц
@@ -587,6 +600,13 @@ ALTER TABLE `auth_item_child`
 --
 ALTER TABLE `auth_rule`
   ADD PRIMARY KEY (`name`);
+
+--
+-- Индексы таблицы `clients`
+--
+ALTER TABLE `clients`
+  ADD PRIMARY KEY (`id`) USING BTREE,
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Индексы таблицы `country`
@@ -632,6 +652,11 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT для таблицы `clients`
+--
+ALTER TABLE `clients`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
 -- AUTO_INCREMENT для таблицы `country`
 --
 ALTER TABLE `country`
@@ -650,7 +675,7 @@ ALTER TABLE `source_message`
 -- AUTO_INCREMENT для таблицы `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- Ограничения внешнего ключа сохраненных таблиц
 --
@@ -673,6 +698,12 @@ ALTER TABLE `auth_item`
 ALTER TABLE `auth_item_child`
   ADD CONSTRAINT `auth_item_child_ibfk_1` FOREIGN KEY (`parent`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `auth_item_child_ibfk_2` FOREIGN KEY (`child`) REFERENCES `auth_item` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `clients`
+--
+ALTER TABLE `clients`
+  ADD CONSTRAINT `clients_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `message`
