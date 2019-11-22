@@ -78,9 +78,7 @@ $this->title = 'Карточка пользователя';
                 </table>
             </div>
         </div>
-    </div>
 
-    <div class="col-md-6">
         <div class="box box-danger">
             <div class="box-header with-border">
                 <h3 class="box-title">Дополнительная информация</h3>
@@ -94,6 +92,142 @@ $this->title = 'Карточка пользователя';
                 <div class="row">
                     <div class="col-md-12">
                         <?= $model->additional_info ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="box box-warning collapsed-box">
+            <div class="box-header with-border">
+                <h3 class="box-title">Добавить перезвон</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+            <div class="box-body">
+                <?php $form = \yii\widgets\ActiveForm::begin(['action' => 'view?id='.$id]) ?>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <?= $form->field($callModel, 'date')->widget(\kartik\date\DatePicker::classname(), [
+                                'pluginOptions' => [
+                                    'autoclose'=>true,
+                                    'pluginOptions' => [
+                                        'format' => 'dd-mm-yyyy'
+                                    ]
+                                ]
+                            ]); ?>
+                        </div>
+                        <div class="col-md-6">
+                            <?= $form->field($callModel, 'time')->widget(\kartik\time\TimePicker::classname(), [
+                                'pluginOptions' => [
+                                    'autoclose' => true,
+                                    'showMeridian' => false,
+                                    'defaultTime' => '11:00'
+                                ]
+                            ]); ?>
+                        </div>
+                    </div>
+
+                    <?= $form->field($callModel, 'comment')->textarea() ?>
+
+                    <button class="btn btn-primary pull-right" type="submit">Добавить</button>
+                <?php \yii\widgets\ActiveForm::end() ?>
+            </div>
+        </div>
+
+        <div class="box box-success">
+            <div class="box-header with-border">
+                <h3 class="box-title">Перезвоны</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+            <div class="box-body">
+                <?php if(isset($calls) && !empty($calls)): ?>
+                    <?php foreach ($calls as $call): ?>
+                        <strong class="text-<?= $call->status == 1 ? 'green' : 'red' ?>">
+                            <i class="fa fa-phone margin-r-5"></i>
+                            <span class="">
+                                Позвонить <?= date('d.m.Y', strtotime($call->date)) ?> в <?= $call->time ?>
+                            </span>
+                        </strong>
+
+                        <p class="text-muted" style="margin-top: 10px">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" class="call-checkbox" value="<?= $call->id ?>" <?= $call->status == 1 ? 'checked' : '' ?>>
+                                    <?= $call->comment ?>
+                                </label>
+                            </div>
+                        </p>
+
+                        <hr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    Нету запланированых звонков
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="box box-warning collapsed-box">
+            <div class="box-header with-border">
+                <h3 class="box-title">Добавить комментарий</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+            <div class="box-body">
+                <?php $form = \yii\widgets\ActiveForm::begin(['action' => 'view?id='.$id]) ?>
+
+                    <?= $form->field($commentModel, 'comment')->textarea() ?>
+
+                    <button class="btn btn-primary pull-right" type="submit">Добавить</button>
+
+                <?php \yii\widgets\ActiveForm::end() ?>
+            </div>
+        </div>
+
+        <div class="box box-info">
+            <div class="box-header with-border">
+                <h3 class="box-title">Комментарии</h3>
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                </div>
+            </div>
+
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <?php if(isset($comments) && !empty($comments)): ?>
+                            <div class="tab-pane active" id="timeline">
+                                <ul class="timeline timeline-inverse">
+                                    <?php foreach ($comments as $comment): ?>
+                                        <li>
+                                            <i class="fa fa-comments bg-yellow"></i>
+                                            <div class="timeline-item">
+                                                <span class="time">
+                                                    <i class="fa fa-clock-o"></i>
+                                                    <?= date('d.m.Y H:i', strtotime($comment->created_at)) ?>
+                                                </span>
+                                                <h3 class="timeline-header no-border">
+                                                    <?= $comment->comment ?>
+                                                </h3>
+                                            </div>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        <?php else: ?>
+                            Комментарии отсутствуют.
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

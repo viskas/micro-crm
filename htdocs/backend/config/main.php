@@ -18,6 +18,7 @@ return [
         'allowActions' => [
             'site/*',
 //            'admin/*',
+//            'gii/*'
         ],
     ],
     'components' => [

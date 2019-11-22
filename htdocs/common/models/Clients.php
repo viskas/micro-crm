@@ -87,4 +87,20 @@ class Clients extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getClientCalls()
+    {
+        return $this->hasMany(ClientCalls::className(), ['client_id' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getClientComments()
+    {
+        return $this->hasMany(ClientComments::className(), ['client_id' => 'id']);
+    }
 }
