@@ -55,7 +55,7 @@ return [
         'buttons' => [
             'qr' => function ($url, $model, $key) {
                 return \yii\helpers\Html::a('<span class="glyphicon glyphicon-erase"></span>', ['reset-qr', 'id' => $key], [
-                    'class' => 'btn btn-default',
+                    'class' => 'btn btn-default btn-xs',
                     'role' => 'modal-remote',
                     'data-toggle' => 'tooltip',
                     'title' => 'Сбросить QR код',
@@ -70,9 +70,9 @@ return [
         'urlCreator' => function($action, $model, $key, $index) {
             return Url::to([$action,'id'=>$key]);
         },
-        'updateOptions'=>['role'=>'modal-remote','title'=>'Отредактировать', 'data-toggle'=>'tooltip', 'class' => 'btn btn-primary'],
+        'updateOptions'=>['role'=>'modal-remote','title'=>'Отредактировать', 'data-toggle'=>'tooltip', 'class' => 'btn btn-primary btn-xs'],
         'deleteOptions'=>['role'=>'modal-remote','title'=>'Заблокировать/разблокировать',
-            'class' => 'btn btn-danger',
+            'class' => 'btn btn-danger btn-xs',
             'data-confirm'=>false, 'data-method'=>false,
             'data-request-method'=>'post',
             'data-toggle'=>'tooltip',

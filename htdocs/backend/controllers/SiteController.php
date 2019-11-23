@@ -2,6 +2,7 @@
 namespace backend\controllers;
 
 use backend\helpers\MainHelper;
+use backend\models\AuthAssignment;
 use backend\models\Feature;
 use backend\models\FeatureSearch;
 use backend\models\ManagerUser;
@@ -78,21 +79,39 @@ class SiteController extends Controller
         $currentDate = date('Y-m-d');
         $currentUserId = Yii::$app->user->identity->getId();
 
-        $calls = ClientCalls::find()
-            ->joinWith(['client'])
-            ->where(['clients.user_id' => $currentUserId])
-            ->andWhere(['<=', 'DATE(date)', $currentDate])
-            ->andWhere(['client_calls.status' => 0])
-            ->orderBy('time')
-            ->all();
+        $role = AuthAssignment::findOne(['user_id' => Yii::$app->user->identity->id]);
 
-        $futureCalls = ClientCalls::find()
-            ->joinWith(['client'])
-            ->where(['clients.user_id' => $currentUserId])
-            ->andWhere(['>', 'DATE(date)', $currentDate])
-            ->andWhere(['client_calls.status' => 0])
-            ->orderBy(['date' => SORT_ASC, 'time' => SORT_ASC])
-            ->all();
+        if ($role && $role->item_name == 'Администратор') {
+            $calls = ClientCalls::find()
+                ->joinWith(['client'])
+                ->andWhere(['<=', 'DATE(date)', $currentDate])
+                ->andWhere(['client_calls.status' => 0])
+                ->orderBy('time')
+                ->all();
+
+            $futureCalls = ClientCalls::find()
+                ->joinWith(['client'])
+                ->andWhere(['>', 'DATE(date)', $currentDate])
+                ->andWhere(['client_calls.status' => 0])
+                ->orderBy(['date' => SORT_ASC, 'time' => SORT_ASC])
+                ->all();
+        } else {
+            $calls = ClientCalls::find()
+                ->joinWith(['client'])
+                ->where(['clients.user_id' => $currentUserId])
+                ->andWhere(['<=', 'DATE(date)', $currentDate])
+                ->andWhere(['client_calls.status' => 0])
+                ->orderBy('time')
+                ->all();
+
+            $futureCalls = ClientCalls::find()
+                ->joinWith(['client'])
+                ->where(['clients.user_id' => $currentUserId])
+                ->andWhere(['>', 'DATE(date)', $currentDate])
+                ->andWhere(['client_calls.status' => 0])
+                ->orderBy(['date' => SORT_ASC, 'time' => SORT_ASC])
+                ->all();
+        }
 
         return $this->render('index', [
             'calls' => $calls,

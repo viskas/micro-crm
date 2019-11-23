@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 21 2019 г., 23:46
+-- Время создания: Ноя 23 2019 г., 14:40
 -- Версия сервера: 5.7.19
 -- Версия PHP: 7.1.7
 
@@ -94,6 +94,7 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 ('/withdrawal/*', 2, NULL, NULL, NULL, 1526896999, 1526896999),
 ('Администратор', 1, NULL, NULL, NULL, 1525161007, 1574361504),
 ('Менеджер', 1, NULL, NULL, NULL, 1525161044, 1574361522),
+('Просмотр главной страницы', 2, NULL, NULL, NULL, 1574501355, 1574501355),
 ('Раздел \"Мои клиенты\"', 2, NULL, NULL, NULL, 1574361381, 1574361381),
 ('Раздел \"Пользователи\"', 2, NULL, NULL, NULL, 1574361439, 1574361439),
 ('Распределение прав', 2, NULL, NULL, NULL, 1574361482, 1574361482),
@@ -122,6 +123,7 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 ('Уведомления', '/noty/*'),
 ('Раздел \"Пользователи\"', '/personal/*'),
 ('Редактирование своего профиля', '/profile/*'),
+('Просмотр главной страницы', '/site/*'),
 ('Менеджер', 'Раздел \"Мои клиенты\"'),
 ('Менеджер', 'Редактирование своего профиля'),
 ('Менеджер', 'Уведомления');
@@ -169,7 +171,62 @@ CREATE TABLE `clients` (
 --
 
 INSERT INTO `clients` (`id`, `user_id`, `platform`, `account_number`, `phone_number`, `additional_phone_number`, `first_name`, `last_name`, `patronymic`, `birthday`, `address`, `skype`, `team_viewer`, `status`, `additional_info`, `created_at`) VALUES
-(2, 2, 'Uxool', '6574859', '+7 912 567-48-95', '+7 912 657-48-95', 'Владимир', 'Кенза', 'Петрович', '2014-11-20', '', 'inokentiy', '769856896', 'В работе', 'Клиент с очень большими деньгами', '2019-11-22 00:20:46');
+(2, 2, 'Uxool', '6574859', '+7 912 567-48-95', '+7 912 657-48-95', 'Владимир', 'Кенза', 'Петрович', '2014-11-20', '', 'inokentiy', '769856896', 'В работе', 'Клиент с очень большими деньгами', '2019-11-22 00:20:46'),
+(3, 2, 'Uxool', '64275', '+791276895476', '', 'Иван', 'Самодин', '', NULL, '', 'vanyas', '', 'В разработке', '', '2019-11-23 14:35:40');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `client_calls`
+--
+
+CREATE TABLE `client_calls` (
+  `id` int(11) NOT NULL,
+  `client_id` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `time` varchar(20) DEFAULT NULL,
+  `comment` text,
+  `status` int(11) DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `client_calls`
+--
+
+INSERT INTO `client_calls` (`id`, `client_id`, `date`, `time`, `comment`, `status`, `created_at`) VALUES
+(1, 2, '2019-11-23', '14:00', 'Перезвонить по поводу пополнения средств.', 0, '2019-11-24 20:40:39'),
+(2, 2, '2019-11-20', '12:30', 'dfgh', 1, '2019-11-22 21:17:29'),
+(3, 2, '2019-11-20', '15:15', 'Обязательно нужно перезвонить', 0, '2019-11-22 21:18:56'),
+(4, 2, '2019-11-20', '12:35', 'Перезвон!!!', 0, '2019-11-22 21:43:07'),
+(5, 3, '2024-11-20', '11:00', 'Test', 0, '2019-11-23 10:28:12'),
+(6, 3, '2021-11-20', '11:00', 'fghdfgh', 1, '2019-11-23 10:55:57'),
+(7, 3, '2024-11-20', '11:00', 'dfsgf', 0, '2019-11-23 10:58:23'),
+(8, 3, '2023-11-20', '12:00', 'fghjfghj', 0, '2019-11-23 10:59:05'),
+(9, 3, '2023-11-20', '11:00', 'dfghdfghfh', 0, '2019-11-23 11:00:11'),
+(11, 3, '2019-11-27', '11:00', 'Test', 0, '2019-11-23 11:03:19');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `client_comments`
+--
+
+CREATE TABLE `client_comments` (
+  `id` int(11) NOT NULL,
+  `client_id` int(11) NOT NULL,
+  `comment` text NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `client_comments`
+--
+
+INSERT INTO `client_comments` (`id`, `client_id`, `comment`, `created_at`) VALUES
+(1, 2, 'У клиента подвешен язык', '2019-11-22 21:23:13'),
+(2, 2, 'Супер комментарий', '2019-11-22 21:24:09'),
+(3, 2, 'gdfhdfgh', '2019-11-22 21:42:39');
 
 -- --------------------------------------------------------
 
@@ -609,6 +666,20 @@ ALTER TABLE `clients`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Индексы таблицы `client_calls`
+--
+ALTER TABLE `client_calls`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `client_id` (`client_id`);
+
+--
+-- Индексы таблицы `client_comments`
+--
+ALTER TABLE `client_comments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `client_id` (`client_id`);
+
+--
 -- Индексы таблицы `country`
 --
 ALTER TABLE `country`
@@ -657,6 +728,16 @@ ALTER TABLE `user`
 ALTER TABLE `clients`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
+-- AUTO_INCREMENT для таблицы `client_calls`
+--
+ALTER TABLE `client_calls`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+--
+-- AUTO_INCREMENT для таблицы `client_comments`
+--
+ALTER TABLE `client_comments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
 -- AUTO_INCREMENT для таблицы `country`
 --
 ALTER TABLE `country`
@@ -675,7 +756,7 @@ ALTER TABLE `source_message`
 -- AUTO_INCREMENT для таблицы `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- Ограничения внешнего ключа сохраненных таблиц
 --
@@ -704,6 +785,18 @@ ALTER TABLE `auth_item_child`
 --
 ALTER TABLE `clients`
   ADD CONSTRAINT `clients_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `client_calls`
+--
+ALTER TABLE `client_calls`
+  ADD CONSTRAINT `client_calls_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `client_comments`
+--
+ALTER TABLE `client_comments`
+  ADD CONSTRAINT `client_comments_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `message`

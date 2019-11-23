@@ -2,6 +2,8 @@
 
 namespace backend\controllers;
 
+use common\models\ClientCalls;
+use common\models\ClientComments;
 use Yii;
 use common\models\Clients;
 use backend\models\AdminClientsSearch;
@@ -63,8 +65,22 @@ class AdminClientController extends Controller
 
     public function actionView($id)
     {
+        $calls = ClientCalls::find()
+            ->joinWith(['client'])
+            ->where(['client_id' => $id])
+            ->orderBy(['created_at' => SORT_DESC])
+            ->all();
+
+        $comments = ClientComments::find()
+            ->joinWith(['client'])
+            ->where(['client_id' => $id])
+            ->orderBy(['created_at' => SORT_DESC])
+            ->all();
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'calls' => $calls,
+            'comments' => $comments,
         ]);
     }
 
