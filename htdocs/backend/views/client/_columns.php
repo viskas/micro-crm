@@ -64,7 +64,7 @@ return [
         'urlCreator' => function($action, $model, $key, $index) { 
                 return Url::to([$action,'id'=>$key]);
         },
-        'viewOptions'=>['title'=>'Просмотр', 'class' => 'btn btn-info', 'data-pjax' => false],
+        'viewOptions'=>['title'=>'Просмотр', 'class' => 'btn btn-info btn-xs', 'data-pjax' => false],
         'updateOptions'=>['role'=>'modal-remote','title'=>'Редактирование', 'data-toggle'=>'tooltip', 'class' => 'btn btn-xs btn-primary'],
         'deleteOptions'=>['role'=>'modal-remote','title'=>'Удаление',
                           'data-confirm'=>false, 'data-method'=>false,

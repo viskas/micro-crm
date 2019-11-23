@@ -109,15 +109,6 @@ return [
                     'class' => 'mdm\admin\controllers\AssignmentController',
                     'idField' => 'id',
                     'usernameField' => 'email',
-                    'extraColumns' => [
-                        [
-                            'header' => 'Full Name',
-                            'value' => function($model, $key, $index, $column) {
-                                return $model->first_name . ' ' . $model->last_name;
-                            },
-                        ],
-                    ],
-                    'searchClass' => 'backend\models\UsersSearch'
                 ],
             ],
         ],

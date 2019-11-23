@@ -12,6 +12,25 @@ jQuery(function($){
         return false;
     });
 
+    $('.main-call-complete').on('change', function (e) {
+        if (confirm('Вы точно хотите отметить звонок как выполненный?')) {
+            var id = $(this).val();
+
+            $.ajax({
+                url: '/admin/client/call-status',
+                type: 'post',
+                data: {"id": id},
+                success: function (response) {
+                    if (response == 1) {
+                        $('#call-' + id).hide();
+                    }
+                }
+            });
+        } else {
+            this.checked = false;
+        };
+    });
+
     $('#qr-auth').click(function() {
         if ($(this).is(':checked')) {
             var html = '';

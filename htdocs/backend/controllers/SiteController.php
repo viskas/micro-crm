@@ -10,6 +10,7 @@ use backend\models\PromoAdmin;
 use backend\models\ResetPasswordForm;
 use backend\models\UserCall;
 use backend\models\UserCallAudio;
+use common\models\ClientCalls;
 use common\models\Statuses;
 use Yii;
 use yii\base\InvalidParamException;
@@ -74,7 +75,29 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index', []);
+        $currentDate = date('Y-m-d');
+        $currentUserId = Yii::$app->user->identity->getId();
+
+        $calls = ClientCalls::find()
+            ->joinWith(['client'])
+            ->where(['clients.user_id' => $currentUserId])
+            ->andWhere(['<=', 'DATE(date)', $currentDate])
+            ->andWhere(['client_calls.status' => 0])
+            ->orderBy('time')
+            ->all();
+
+        $futureCalls = ClientCalls::find()
+            ->joinWith(['client'])
+            ->where(['clients.user_id' => $currentUserId])
+            ->andWhere(['>', 'DATE(date)', $currentDate])
+            ->andWhere(['client_calls.status' => 0])
+            ->orderBy(['date' => SORT_ASC, 'time' => SORT_ASC])
+            ->all();
+
+        return $this->render('index', [
+            'calls' => $calls,
+            'futureCalls' => $futureCalls
+        ]);
     }
 
     /**

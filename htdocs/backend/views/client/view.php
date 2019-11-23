@@ -115,7 +115,8 @@ $this->title = 'Карточка пользователя';
                                 'pluginOptions' => [
                                     'autoclose'=>true,
                                     'pluginOptions' => [
-                                        'format' => 'dd-mm-yyyy'
+                                        'format' => 'dd-mm-yyyy',
+                                        'todayHighlight' => true
                                     ]
                                 ]
                             ]); ?>

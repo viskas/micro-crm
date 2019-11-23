@@ -67,10 +67,13 @@ class ClientController extends Controller
         $callModel->client_id = $id;
         $commentModel->client_id = $id;
 
-        if ($callModel->load($request->post()) && $callModel->save()) {
-            Yii::$app->session->setFlash('success', 'Перезвон добавлен');
+        if ($callModel->load($request->post())) {
+            $callModel->date = date('Y-m-d', strtotime($callModel->date));
+            if ($callModel->save()) {
+                Yii::$app->session->setFlash('success', 'Перезвон добавлен');
 
-            return $this->refresh();
+                return $this->refresh();
+            }
         }
 
         if ($commentModel->load($request->post()) && $commentModel->save()) {
@@ -216,7 +219,12 @@ class ClientController extends Controller
 
     protected function findModel($id)
     {
-        if (($model = Clients::findOne($id)) !== null) {
+        $model = Clients::find()
+            ->where(['id' => $id])
+            ->andWhere(['user_id' => Yii::$app->user->identity->getId()])
+            ->one();
+
+        if ($model !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

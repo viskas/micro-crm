@@ -16,7 +16,7 @@ use dmstr\widgets\Alert;
 
                 // for custom layer
                 'registerAnimateCss' => true,
-                'registerButtonsCss' => true
+                'registerButtonsCss' => false
             ],
 
             // clientOptions
