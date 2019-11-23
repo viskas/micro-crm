@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 23 2019 г., 14:40
+-- Время создания: Ноя 23 2019 г., 15:49
 -- Версия сервера: 5.7.19
 -- Версия PHP: 7.1.7
 
@@ -66,6 +66,7 @@ CREATE TABLE `auth_item` (
 INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `created_at`, `updated_at`) VALUES
 ('/*', 2, NULL, NULL, NULL, 1525320643, 1525320643),
 ('/admin/*', 2, NULL, NULL, NULL, 1525317811, 1525317811),
+('/client-calls/*', 2, NULL, NULL, NULL, 1574509918, 1574509918),
 ('/client/*', 2, NULL, NULL, NULL, 1574361268, 1574361268),
 ('/clients/*', 2, NULL, NULL, NULL, 1525765253, 1525765253),
 ('/contact-us/*', 2, NULL, NULL, NULL, 1526293230, 1526293230),
@@ -93,8 +94,9 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 ('/users/*', 2, NULL, NULL, NULL, 1525320569, 1525320569),
 ('/withdrawal/*', 2, NULL, NULL, NULL, 1526896999, 1526896999),
 ('Администратор', 1, NULL, NULL, NULL, 1525161007, 1574361504),
-('Менеджер', 1, NULL, NULL, NULL, 1525161044, 1574361522),
+('Менеджер', 1, NULL, NULL, NULL, 1525161044, 1574509982),
 ('Просмотр главной страницы', 2, NULL, NULL, NULL, 1574501355, 1574501355),
+('Раздел \"Мои звонки\"', 2, NULL, NULL, NULL, 1574509962, 1574509962),
 ('Раздел \"Мои клиенты\"', 2, NULL, NULL, NULL, 1574361381, 1574361381),
 ('Раздел \"Пользователи\"', 2, NULL, NULL, NULL, 1574361439, 1574361439),
 ('Распределение прав', 2, NULL, NULL, NULL, 1574361482, 1574361482),
@@ -119,11 +121,14 @@ CREATE TABLE `auth_item_child` (
 INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 ('Администратор', '/*'),
 ('Распределение прав', '/admin/*'),
+('Раздел \"Мои звонки\"', '/client-calls/*'),
 ('Раздел \"Мои клиенты\"', '/client/*'),
 ('Уведомления', '/noty/*'),
 ('Раздел \"Пользователи\"', '/personal/*'),
 ('Редактирование своего профиля', '/profile/*'),
 ('Просмотр главной страницы', '/site/*'),
+('Менеджер', 'Просмотр главной страницы'),
+('Менеджер', 'Раздел \"Мои звонки\"'),
 ('Менеджер', 'Раздел \"Мои клиенты\"'),
 ('Менеджер', 'Редактирование своего профиля'),
 ('Менеджер', 'Уведомления');
@@ -172,7 +177,7 @@ CREATE TABLE `clients` (
 
 INSERT INTO `clients` (`id`, `user_id`, `platform`, `account_number`, `phone_number`, `additional_phone_number`, `first_name`, `last_name`, `patronymic`, `birthday`, `address`, `skype`, `team_viewer`, `status`, `additional_info`, `created_at`) VALUES
 (2, 2, 'Uxool', '6574859', '+7 912 567-48-95', '+7 912 657-48-95', 'Владимир', 'Кенза', 'Петрович', '2014-11-20', '', 'inokentiy', '769856896', 'В работе', 'Клиент с очень большими деньгами', '2019-11-22 00:20:46'),
-(3, 2, 'Uxool', '64275', '+791276895476', '', 'Иван', 'Самодин', '', NULL, '', 'vanyas', '', 'В разработке', '', '2019-11-23 14:35:40');
+(3, 1, 'Uxool', '64275', '+791276895476', '', 'Иван', 'Самодин', '', NULL, '', 'vanyas', '', 'В разработке', '', '2019-11-23 14:35:40');
 
 -- --------------------------------------------------------
 
@@ -200,11 +205,8 @@ INSERT INTO `client_calls` (`id`, `client_id`, `date`, `time`, `comment`, `statu
 (3, 2, '2019-11-20', '15:15', 'Обязательно нужно перезвонить', 0, '2019-11-22 21:18:56'),
 (4, 2, '2019-11-20', '12:35', 'Перезвон!!!', 0, '2019-11-22 21:43:07'),
 (5, 3, '2024-11-20', '11:00', 'Test', 0, '2019-11-23 10:28:12'),
-(6, 3, '2021-11-20', '11:00', 'fghdfgh', 1, '2019-11-23 10:55:57'),
-(7, 3, '2024-11-20', '11:00', 'dfsgf', 0, '2019-11-23 10:58:23'),
-(8, 3, '2023-11-20', '12:00', 'fghjfghj', 0, '2019-11-23 10:59:05'),
-(9, 3, '2023-11-20', '11:00', 'dfghdfghfh', 0, '2019-11-23 11:00:11'),
-(11, 3, '2019-11-27', '11:00', 'Test', 0, '2019-11-23 11:03:19');
+(11, 3, '2019-11-27', '11:00', 'Test', 0, '2019-11-23 11:03:19'),
+(12, 2, '2019-11-30', '11:00', 'Тест', 0, '2019-11-23 12:32:20');
 
 -- --------------------------------------------------------
 
@@ -543,7 +545,9 @@ INSERT INTO `message` (`id`, `language`, `hash`, `translation`) VALUES
 (4, 'ru', '', NULL),
 (4, 'us', '', NULL),
 (5, 'ru', '', NULL),
-(5, 'us', '', NULL);
+(5, 'us', '', NULL),
+(6, 'ru', '', NULL),
+(6, 'us', '', NULL);
 
 -- --------------------------------------------------------
 
@@ -593,7 +597,8 @@ INSERT INTO `source_message` (`id`, `hash`, `category`, `message`, `location`) V
 (2, '', 'app', 'Удален', NULL),
 (3, '', 'app', 'First name', NULL),
 (4, '', 'app', 'Last name', NULL),
-(5, '', 'app', 'Email', NULL);
+(5, '', 'app', 'Email', NULL),
+(6, '', 'app', 'Выберите пользователя...', NULL);
 
 -- --------------------------------------------------------
 
@@ -624,7 +629,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `first_name`, `last_name`, `username`, `auth_key`, `secret_key`, `password_hash`, `password_reset_token`, `email`, `is_user`, `qr_status`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Администратор', 'Администратор', NULL, 'DyoNBwr75MWepn7jWBzPFMELBogWV5LG', 'MSFWNI65KF7Z64JW', '$2y$13$y.Moj4WP8VtmJGUtuC02FOC6Om4qNdkkqw.vhxP99QE8diYZJgnDO', NULL, 'prybylov.v@gmail.com', 0, 0, 10, 1525159721, 1528427446),
-(2, 'Василий', 'Петров', NULL, 'Xq2UbOBrre6uOuw3Fs9chCs_TVvNieyO', 'EDHEYQO7THCAU5SK', '$2y$13$BOp3CmzOGJSBZe1joWoKn.woYd6bXSmxpF6tD4QUtal8AEGReBEai', NULL, 'manager@demo.com', 0, 0, 10, 1574358624, 1574358624);
+(2, 'Василий', 'Петров', NULL, 'Xq2UbOBrre6uOuw3Fs9chCs_TVvNieyO', 'EDHEYQO7THCAU5SK', '$2y$13$BOp3CmzOGJSBZe1joWoKn.woYd6bXSmxpF6tD4QUtal8AEGReBEai', NULL, 'manager@demo.com', 0, 0, 10, 1574358624, 1574509455);
 
 --
 -- Индексы сохранённых таблиц
@@ -731,7 +736,7 @@ ALTER TABLE `clients`
 -- AUTO_INCREMENT для таблицы `client_calls`
 --
 ALTER TABLE `client_calls`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT для таблицы `client_comments`
 --
@@ -751,7 +756,7 @@ ALTER TABLE `languages`
 -- AUTO_INCREMENT для таблицы `source_message`
 --
 ALTER TABLE `source_message`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT для таблицы `user`
 --
