@@ -4,7 +4,7 @@ use mdm\admin\components\MenuHelper;
 
 $role = \backend\models\AuthAssignment::findOne(['user_id' => Yii::$app->user->identity->id]);
 
-$is_manager = isset($role->item_name) && $role->item_name == 'Менеджер' ? true : false;
+$is_manager = isset($role->item_name) && $role->item_name == 'Аналитик' ? true : false;
 ?>
 
 <aside class="main-sidebar">
