@@ -25,8 +25,8 @@ use yii\widgets\ActiveForm;
             </label>
 
             <label class="radio-inline">
-                <input type="radio" class="styled" name="Personal[role]" value="Менеджер">
-                Менеджер
+                <input type="radio" class="styled" name="Personal[role]" value="Аналитик">
+                Аналитик
             </label>
         </div>
     <?php endif; ?>
