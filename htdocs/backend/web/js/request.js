@@ -58,7 +58,7 @@ jQuery(function($){
 
     setInterval(function() {
         noty();
-    }, 1000 * 60 * 1);
+    }, 30000);
 
     function noty() {
         $.ajax({
