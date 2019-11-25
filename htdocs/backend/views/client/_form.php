@@ -73,6 +73,12 @@ use yii\widgets\ActiveForm;
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-12">
+            <?= $form->field($model, 'is_verified')->checkbox() ?>
+        </div>
+    </div>
+
     <?= $form->field($model, 'additional_info')->textarea(['rows' => 6]) ?>
 
   

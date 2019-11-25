@@ -43,7 +43,7 @@ class Clients extends \yii\db\ActiveRecord
     {
         return [
             [['first_name', 'status'], 'required'],
-            [['user_id'], 'integer'],
+            [['user_id', 'is_verified'], 'integer'],
             [['birthday', 'created_at'], 'safe'],
             [['additional_info'], 'string'],
             [['platform'], 'string', 'max' => 50],
@@ -75,6 +75,7 @@ class Clients extends \yii\db\ActiveRecord
             'skype' => 'Skype',
             'team_viewer' => 'Team Viewer',
             'status' => 'Статус',
+            'is_verified' => 'Верифицирован',
             'additional_info' => 'Дополнительная информация',
             'created_at' => 'Дата создания',
         ];

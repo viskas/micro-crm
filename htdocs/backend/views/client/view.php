@@ -67,6 +67,10 @@ $this->title = 'Карточка пользователя';
                             <td><?= $model->team_viewer ?></td>
                         </tr>
                         <tr>
+                            <th>Верифицирован</th>
+                            <td><?= $model->is_verified ? 'Да' : 'Нет' ?></td>
+                        </tr>
+                        <tr>
                             <th>Статус</th>
                             <td><?= $model->status ?></td>
                         </tr>
