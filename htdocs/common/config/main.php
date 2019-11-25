@@ -5,6 +5,7 @@ return [
         '@npm'   => '@vendor/npm-asset',
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
+    'timezone' => 'Europe/Moscow',
     'modules' => [
         'noty' => [
             'class' => 'lo\modules\noty\Module',
