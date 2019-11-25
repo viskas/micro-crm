@@ -12,7 +12,7 @@ return [
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log', 'logreader'],
     'language' => 'ru',
-    'timeZone' => 'Asia/Bangkok',
+    'timezone' => 'Europe/Moscow',
     'as access' => [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [
