@@ -29,6 +29,25 @@ use dmstr\widgets\Alert;
             ],
         ]); ?>
         <?= $content ?>
+        <button id="danger-modal" type="button" data-toggle="modal" data-target="#modal-danger" style="display: none"></button>
+        <div class="modal modal-danger fade" id="modal-danger" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title">Звонок</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Напоминание о звонке!</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline pull-left" data-dismiss="modal">Закрыть</button>
+                        <a href="/admin" class="btn btn-outline">Перейти к звонку</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 </div>
 

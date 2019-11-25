@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\AuthAssignment;
 use common\models\ClientCalls;
 use common\models\ClientComments;
 use Yii;
@@ -55,6 +56,39 @@ class ClientController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+
+    public function actionNotification()
+    {
+        $currentDate = date('Y-m-d');
+        $currentUserId = Yii::$app->user->identity->getId();
+
+        $role = AuthAssignment::findOne(['user_id' => Yii::$app->user->identity->id]);
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        if ($role && $role->item_name != 'Администратор') {
+            $call = ClientCalls::find()
+                ->joinWith(['client'])
+                ->where(['clients.user_id' => $currentUserId])
+                ->andWhere(['>=', 'DATE(date)', $currentDate])
+                ->andWhere(['client_calls.status' => 0])
+                ->orderBy('time')
+                ->one();
+
+            if ($call) {
+                $callDate = strtotime($call->date . ' ' . $call->time .':00');
+                $now = time();
+
+                if ($callDate <= $now) {
+                    return 1;
+                }
+            }
+        }
+
+        return [
+            'alarm' => false
+        ];
     }
 
     public function actionView($id)

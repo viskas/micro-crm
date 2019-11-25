@@ -55,4 +55,23 @@ jQuery(function($){
             $('#qr-auth-form').show();
         }
     });
+
+    setInterval(function() {
+        noty();
+    }, 1000 * 60 * 1);
+
+    function noty() {
+        $.ajax({
+            url: '/admin/client/notification',
+            type: 'get',
+            global: false,
+            success: function (response) {
+                if (response == 1) {
+                    if (!$('#modal-danger').hasClass('in')){
+                        $('#danger-modal').click();
+                    }
+                }
+            }
+        });
+    }
 });
