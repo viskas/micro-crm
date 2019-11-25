@@ -32,6 +32,8 @@ $now->setTime( 0, 0, 0 );
                                 <p>
                                     <b>Клиент:</b> <a href="<?= Url::to(['client/index', 'ClientsSearch[id]' => $call->client->id]) ?>"><?= $call->client->first_name ?> <?= isset($call->client->last_name) ? $call->client->last_name :'' ?></a><br>
                                     <b>Платформа:</b> <?= isset($call->client->platform) ? $call->client->platform : '' ?><br>
+                                    <b>Телефон:</b> <?= isset($call->client->phone_number) ? $call->client->phone_number : '' ?><br>
+                                    <b>Доп. телефон:</b> <?= isset($call->client->additional_phone_number) ? $call->client->additional_phone_number : '' ?><br>
                                     <b>Заметка:</b> <?= $call->comment ?>
                                 </p>
                             </div>
