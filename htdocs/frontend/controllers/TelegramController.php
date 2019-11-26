@@ -71,21 +71,18 @@ class TelegramController extends Controller
         }
 
         if (isset($credentials[1]) && !empty($credentials[1])) {
-            $password = Yii::$app->security->generatePasswordHash(trim($credentials[1]));
+            $password = trim($credentials[1]);
         }
 
         if (!$email || !$password) {
             return $this->telegram->sendMessage(['chat_id' => $chat_id, 'text' => 'Не верно.']);
         }
 
-        $user = User::findOne([
-            'email' => $email,
-            'password_hash' => $password
-        ]);
+        $user = User::findByEmail($email);
 
         $tgNotify = TgNotify::findOne(['chat_id' => $chat_id]);
 
-        if ($user && !$tgNotify) {
+        if ($user->validatePassword($password) && !$tgNotify) {
             $model = new TgNotify();
             $model->chat_id = $chat_id;
             $model->user_id = $user->id;
