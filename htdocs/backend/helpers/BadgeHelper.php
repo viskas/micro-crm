@@ -2,77 +2,50 @@
 
 namespace backend\helpers;
 
-use backend\models\OrderBalance;
-use backend\models\Withdrawal;
-
-use common\models\RequestMessages;
-use common\models\ContactUs;
-use common\models\Document;
-use common\models\Request;
+use yii;
+use common\models\ClientCalls;
 
 class BadgeHelper
 {
-    public static function ContactUsCount()
+    public static function callsCount()
     {
-        return ContactUs::find()
-            ->where(['status' => ContactUs::STATUS_NEW])
+        return ClientCalls::find()
+            ->joinWith(['client'])
+            ->where(['clients.user_id' => Yii::$app->user->identity->getId()])
+            ->andWhere(['client_calls.status' => 0])
             ->count();
     }
 
-    public static function RequestCount()
+    public static function missedCalls()
     {
-        return Request::find()
-            ->where(['status' => Request::STATUS_OPENED])
-            ->count();
-    }
+        $count = 0;
+        $now = new \DateTime();
+        $now->setTime( 0, 0, 0 );
+        $currentDate = date('Y-m-d');
+        $currentUserId = Yii::$app->user->identity->getId();
 
-    public static function UnreadStaffMessage($request_id)
-    {
-        return RequestMessages::find()
-            ->where(['request_id' => $request_id, 'staff_id' => null])
-            ->andWhere(['status' => RequestMessages::STATUS_UNREAD])
-            ->count();
-    }
+        $calls = ClientCalls::find()
+            ->joinWith(['client'])
+            ->where(['clients.user_id' => $currentUserId])
+            ->andWhere(['<=', 'DATE(date)', $currentDate])
+            ->andWhere(['client_calls.status' => 0])
+            ->orderBy('time')
+            ->all();
 
-    public static function NewWithdrawal()
-    {
-        return Withdrawal::find()
-            ->andWhere(['status' => 0])
-            ->count();
-    }
+        if ($calls && !empty($calls)) {
+            foreach ($calls as $call) {
+                $callDate = new \DateTime($call->date);
+                $callDate->setTime( 0, 0, 0 );
 
-    public static function VerifyDocuments($user_id)
-    {
-        return Document::find()
-            ->where(['user_id' => $user_id, 'status' => Document::STATUS_VERIFY])
-            ->count();
-    }
+                $date = strtotime($call->date . ' ' . $call->time .':00');
+                $nowDate = time();
 
-    public static function NotVerifyDocuments($user_id)
-    {
-        return Document::find()
-            ->where(['user_id' => $user_id, 'status' => Document::STATUS_NOT_VERIFY])
-            ->count();
-    }
+                if ($now->diff($callDate)->days !== 0 || $date <= $nowDate) {
+                    $count += 1;
+                }
+            }
+        }
 
-    public static function DeclineDocuments($user_id)
-    {
-        return Document::find()
-            ->where(['user_id' => $user_id, 'status' => Document::STATUS_DECLINED])
-            ->count();
-    }
-
-    public static function TotalDocuments()
-    {
-        return Document::find()
-            ->where(['status' => Document::STATUS_NOT_VERIFY])
-            ->count();
-    }
-
-    public static function NewOrderBalance()
-    {
-        return OrderBalance::find()
-            ->where(['status' => 2])
-            ->count();
+        return $count;
     }
 }

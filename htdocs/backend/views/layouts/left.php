@@ -1,10 +1,17 @@
 <?php
 use mdm\admin\components\Helper;
 use mdm\admin\components\MenuHelper;
+use backend\helpers\BadgeHelper;
 
 $role = \backend\models\AuthAssignment::findOne(['user_id' => Yii::$app->user->identity->id]);
 
 $is_manager = isset($role->item_name) && $role->item_name == 'Аналитик' ? true : false;
+
+$callsBadge = BadgeHelper::callsCount();
+$missedCallsBadge = BadgeHelper::missedCalls();
+
+$calls = $callsBadge == 0 ? '' : '<span class="pull-right-container"><small class="label label-danger pull-right-new">'.$callsBadge.'</small></span>';
+$missedCalls = $missedCallsBadge == 0 ? '' : '<span class="pull-right-container"><small class="label label-danger pull-right-new">'.$missedCallsBadge.'</small></span>';
 ?>
 
 <aside class="main-sidebar">
@@ -22,7 +29,7 @@ $is_manager = isset($role->item_name) && $role->item_name == 'Аналитик' 
 
         <?php
             $menuItems = [
-                ['label' => 'Главная страница', 'icon' => 'dashboard', 'url' => ['/site/index']],
+                ['label' => 'Главная страница '.$missedCalls, 'icon' => 'dashboard', 'url' => ['/site/index']],
                 [
                     'label' => 'Пользователи',
                     'icon' => 'user-o',
@@ -35,7 +42,7 @@ $is_manager = isset($role->item_name) && $role->item_name == 'Аналитик' 
                 ],
                 $is_manager ? ['label' => 'Мои клиенты', 'icon' => 'id-card-o', 'url' => ['/client/index']] : [],
                 ['label' => 'Клиенты', 'icon' => 'id-card-o', 'url' => ['/admin-client/index']],
-                $is_manager ? ['label' => 'Мои звонки', 'icon' => 'phone', 'url' => ['/client-calls/index']] : [],
+                $is_manager ? ['label' => 'Мои звонки '.$calls, 'icon' => 'phone', 'url' => ['/client-calls/index']] : [],
                 ['label' => 'Звонки', 'icon' => 'phone', 'url' => ['/admin-client-calls/index']],
             ];
 
