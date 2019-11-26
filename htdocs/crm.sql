@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 23 2019 г., 15:49
+-- Время создания: Ноя 26 2019 г., 21:49
 -- Версия сервера: 5.7.19
 -- Версия PHP: 7.1.7
 
@@ -40,8 +40,8 @@ CREATE TABLE `auth_assignment` (
 
 INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
 ('Администратор', '1', 1525161228),
-('Менеджер', '2', 1602420624),
-('Менеджер', '3', 1602387827);
+('Аналитик', '2', 1602420624),
+('Аналитик', '3', 1602387827);
 
 -- --------------------------------------------------------
 
@@ -94,7 +94,7 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 ('/users/*', 2, NULL, NULL, NULL, 1525320569, 1525320569),
 ('/withdrawal/*', 2, NULL, NULL, NULL, 1526896999, 1526896999),
 ('Администратор', 1, NULL, NULL, NULL, 1525161007, 1574361504),
-('Менеджер', 1, NULL, NULL, NULL, 1525161044, 1574509982),
+('Аналитик', 1, NULL, NULL, NULL, 1525161044, 1574789656),
 ('Просмотр главной страницы', 2, NULL, NULL, NULL, 1574501355, 1574501355),
 ('Раздел \"Мои звонки\"', 2, NULL, NULL, NULL, 1574509962, 1574509962),
 ('Раздел \"Мои клиенты\"', 2, NULL, NULL, NULL, 1574361381, 1574361381),
@@ -127,11 +127,11 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 ('Раздел \"Пользователи\"', '/personal/*'),
 ('Редактирование своего профиля', '/profile/*'),
 ('Просмотр главной страницы', '/site/*'),
-('Менеджер', 'Просмотр главной страницы'),
-('Менеджер', 'Раздел \"Мои звонки\"'),
-('Менеджер', 'Раздел \"Мои клиенты\"'),
-('Менеджер', 'Редактирование своего профиля'),
-('Менеджер', 'Уведомления');
+('Аналитик', 'Просмотр главной страницы'),
+('Аналитик', 'Раздел \"Мои звонки\"'),
+('Аналитик', 'Раздел \"Мои клиенты\"'),
+('Аналитик', 'Редактирование своего профиля'),
+('Аналитик', 'Уведомления');
 
 -- --------------------------------------------------------
 
@@ -166,6 +166,7 @@ CREATE TABLE `clients` (
   `address` varchar(255) DEFAULT NULL,
   `skype` varchar(255) DEFAULT NULL,
   `team_viewer` varchar(255) DEFAULT NULL,
+  `is_verified` int(11) DEFAULT '0',
   `status` varchar(40) NOT NULL,
   `additional_info` text,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
@@ -175,9 +176,9 @@ CREATE TABLE `clients` (
 -- Дамп данных таблицы `clients`
 --
 
-INSERT INTO `clients` (`id`, `user_id`, `platform`, `account_number`, `phone_number`, `additional_phone_number`, `first_name`, `last_name`, `patronymic`, `birthday`, `address`, `skype`, `team_viewer`, `status`, `additional_info`, `created_at`) VALUES
-(2, 2, 'Uxool', '6574859', '+7 912 567-48-95', '+7 912 657-48-95', 'Владимир', 'Кенза', 'Петрович', '2014-11-20', '', 'inokentiy', '769856896', 'В работе', 'Клиент с очень большими деньгами', '2019-11-22 00:20:46'),
-(3, 1, 'Uxool', '64275', '+791276895476', '', 'Иван', 'Самодин', '', NULL, '', 'vanyas', '', 'В разработке', '', '2019-11-23 14:35:40');
+INSERT INTO `clients` (`id`, `user_id`, `platform`, `account_number`, `phone_number`, `additional_phone_number`, `first_name`, `last_name`, `patronymic`, `birthday`, `address`, `skype`, `team_viewer`, `is_verified`, `status`, `additional_info`, `created_at`) VALUES
+(2, 2, 'Uxool', '6574859', '+7 912 567-48-95', '+7 912 657-48-95', 'Владимир', 'Кенза', 'Петрович', '2014-11-20', '', 'inokentiy', '769856896', 1, 'В работе', 'Клиент с очень большими деньгами', '2019-11-22 00:20:46'),
+(3, 1, 'Uxool', '64275', '+791276895476', '', 'Иван', 'Самодин', '', NULL, '', 'vanyas', '', 0, 'В разработке', '', '2019-11-23 14:35:40');
 
 -- --------------------------------------------------------
 
@@ -200,13 +201,19 @@ CREATE TABLE `client_calls` (
 --
 
 INSERT INTO `client_calls` (`id`, `client_id`, `date`, `time`, `comment`, `status`, `created_at`) VALUES
-(1, 2, '2019-11-23', '14:00', 'Перезвонить по поводу пополнения средств.', 0, '2019-11-24 20:40:39'),
+(1, 2, '2019-11-23', '14:00', 'Перезвонить по поводу пополнения средств.', 1, '2019-11-24 20:40:39'),
 (2, 2, '2019-11-20', '12:30', 'dfgh', 1, '2019-11-22 21:17:29'),
-(3, 2, '2019-11-20', '15:15', 'Обязательно нужно перезвонить', 0, '2019-11-22 21:18:56'),
-(4, 2, '2019-11-20', '12:35', 'Перезвон!!!', 0, '2019-11-22 21:43:07'),
+(3, 2, '2019-11-20', '15:15', 'Обязательно нужно перезвонить', 1, '2019-11-22 21:18:56'),
+(4, 2, '2019-11-20', '12:35', 'Перезвон!!!', 1, '2019-11-22 21:43:07'),
 (5, 3, '2024-11-20', '11:00', 'Test', 0, '2019-11-23 10:28:12'),
 (11, 3, '2019-11-27', '11:00', 'Test', 0, '2019-11-23 11:03:19'),
-(12, 2, '2019-11-30', '11:00', 'Тест', 0, '2019-11-23 12:32:20');
+(12, 2, '2019-11-30', '11:00', 'Тест', 1, '2019-11-23 12:32:20'),
+(13, 2, '2019-11-25', '18:45', '', 1, '2019-11-25 17:44:30'),
+(14, 2, '2019-11-25', '19:45', '123', 1, '2019-11-25 17:45:30'),
+(15, 2, '2019-11-25', '20:21', '', 1, '2019-11-25 17:48:36'),
+(16, 2, '2019-11-25', '11:00', '', 0, '2019-11-25 18:45:01'),
+(17, 2, '2019-11-25', '23:30', '', 0, '2019-11-25 18:45:18'),
+(18, 2, '2019-11-30', '11:00', '', 0, '2019-11-26 17:48:29');
 
 -- --------------------------------------------------------
 
@@ -603,6 +610,19 @@ INSERT INTO `source_message` (`id`, `hash`, `category`, `message`, `location`) V
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `tg_notify`
+--
+
+CREATE TABLE `tg_notify` (
+  `id` int(11) NOT NULL,
+  `chat_id` varchar(255) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `user`
 --
 
@@ -629,7 +649,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `first_name`, `last_name`, `username`, `auth_key`, `secret_key`, `password_hash`, `password_reset_token`, `email`, `is_user`, `qr_status`, `status`, `created_at`, `updated_at`) VALUES
 (1, 'Администратор', 'Администратор', NULL, 'DyoNBwr75MWepn7jWBzPFMELBogWV5LG', 'MSFWNI65KF7Z64JW', '$2y$13$y.Moj4WP8VtmJGUtuC02FOC6Om4qNdkkqw.vhxP99QE8diYZJgnDO', NULL, 'prybylov.v@gmail.com', 0, 0, 10, 1525159721, 1528427446),
-(2, 'Василий', 'Петров', NULL, 'Xq2UbOBrre6uOuw3Fs9chCs_TVvNieyO', 'EDHEYQO7THCAU5SK', '$2y$13$BOp3CmzOGJSBZe1joWoKn.woYd6bXSmxpF6tD4QUtal8AEGReBEai', NULL, 'manager@demo.com', 0, 0, 10, 1574358624, 1574509455);
+(2, 'Василий', 'Петров', NULL, 'Xq2UbOBrre6uOuw3Fs9chCs_TVvNieyO', 'EDHEYQO7THCAU5SK', '$2y$13$BOp3CmzOGJSBZe1joWoKn.woYd6bXSmxpF6tD4QUtal8AEGReBEai', NULL, 'manager@demo.com', 0, 0, 10, 1574358624, 1574516570);
 
 --
 -- Индексы сохранённых таблиц
@@ -716,6 +736,13 @@ ALTER TABLE `source_message`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Индексы таблицы `tg_notify`
+--
+ALTER TABLE `tg_notify`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Индексы таблицы `user`
 --
 ALTER TABLE `user`
@@ -736,7 +763,7 @@ ALTER TABLE `clients`
 -- AUTO_INCREMENT для таблицы `client_calls`
 --
 ALTER TABLE `client_calls`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT для таблицы `client_comments`
 --
@@ -757,6 +784,11 @@ ALTER TABLE `languages`
 --
 ALTER TABLE `source_message`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT для таблицы `tg_notify`
+--
+ALTER TABLE `tg_notify`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT для таблицы `user`
 --
@@ -808,6 +840,12 @@ ALTER TABLE `client_comments`
 --
 ALTER TABLE `message`
   ADD CONSTRAINT `fk_source_message_message` FOREIGN KEY (`id`) REFERENCES `source_message` (`id`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `tg_notify`
+--
+ALTER TABLE `tg_notify`
+  ADD CONSTRAINT `tg_notify_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
