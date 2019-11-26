@@ -15,6 +15,7 @@ return [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'timezone' => 'Europe/Moscow',
     'controllerMap' => [
         'fixture' => [
             'class' => 'yii\console\controllers\FixtureController',
