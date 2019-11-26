@@ -67,11 +67,11 @@ class TelegramController extends Controller
         $credentials = explode("||", $command);
 
         if (isset($credentials[0]) && !empty($credentials[0])) {
-            $email = $credentials[0];
+            $email = trim($credentials[0]);
         }
 
         if (isset($credentials[1]) && !empty($credentials[1])) {
-            $password = Yii::$app->security->generatePasswordHash($credentials[1]);
+            $password = Yii::$app->security->generatePasswordHash(trim($credentials[1]));
         }
 
         if (!$email || !$password) {
