@@ -12,7 +12,8 @@ return [
         'attribute'=>'first_name',
         'value' => function ($model) {
             return $model->first_name . ' ' . $model->last_name;
-        }
+        },
+        'width' => '150px'
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
@@ -30,10 +31,12 @@ return [
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'account_number',
+        'width' => '90px'
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'phone_number',
+        'width' => '150px'
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
@@ -50,10 +53,24 @@ return [
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'filter',
+        'filter' => \kartik\select2\Select2::className(),
+        'filterType' => \kartik\grid\GridView::FILTER_SELECT2,
+        'filterWidgetOptions' => [
+            'data' => $filters,
+            'options' => ['class' => 'form-control', 'prompt' => 'Все'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ],
+    ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'created_at',
         'value' => function ($model) {
             return date('d.m.Y', strtotime($model->created_at));
-        }
+        },
+        'width' => '150px'
     ],
     [
         'class' => 'kartik\grid\ActionColumn',

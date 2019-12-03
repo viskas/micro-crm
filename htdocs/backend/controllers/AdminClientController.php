@@ -54,9 +54,16 @@ class AdminClientController extends Controller
             ->all();
         $statuses = ArrayHelper::map($statuses, 'status', 'status');
 
+        $filters = Clients::find()
+            ->select(['filter'])
+            ->distinct()
+            ->all();
+        $filters = ArrayHelper::map($filters, 'filter', 'filter');
+
         return $this->render('index', [
             'users' => $users,
             'systems' => $systems,
+            'filters' => $filters,
             'statuses' => $statuses,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

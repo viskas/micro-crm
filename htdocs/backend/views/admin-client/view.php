@@ -75,6 +75,10 @@ $this->title = 'Карточка пользователя';
                         <td><?= $model->status ?></td>
                     </tr>
                     <tr>
+                        <th>Фильтр</th>
+                        <td><?= $model->filter ?></td>
+                    </tr>
+                    <tr>
                         <th>Дата создания</th>
                         <td><?= date('d.m.d H:i:s', strtotime($model->created_at)) ?></td>
                     </tr>

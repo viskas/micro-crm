@@ -50,8 +50,16 @@ class ClientController extends Controller
             ->all();
         $statuses = ArrayHelper::map($statuses, 'status', 'status');
 
+        $filters = Clients::find()
+            ->select(['filter'])
+            ->where(['user_id' => Yii::$app->user->identity->getId()])
+            ->distinct()
+            ->all();
+        $filters = ArrayHelper::map($filters, 'filter', 'filter');
+
         return $this->render('index', [
             'systems' => $systems,
+            'filters' => $filters,
             'statuses' => $statuses,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

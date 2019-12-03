@@ -50,6 +50,7 @@ class Clients extends \yii\db\ActiveRecord
             [['account_number', 'address', 'skype', 'team_viewer'], 'string', 'max' => 255],
             [['phone_number', 'additional_phone_number', 'first_name', 'last_name', 'patronymic'], 'string', 'max' => 30],
             [['status'], 'string', 'max' => 40],
+            [['filter'], 'string', 'max' => 60],
             [['id'], 'unique'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -75,6 +76,7 @@ class Clients extends \yii\db\ActiveRecord
             'skype' => 'Skype',
             'team_viewer' => 'Team Viewer',
             'status' => 'Статус',
+            'filter' => 'Фильтр',
             'is_verified' => 'Верифицирован',
             'additional_info' => 'Дополнительная информация',
             'created_at' => 'Дата создания',

@@ -14,7 +14,7 @@ class ClientsSearch extends Clients
     {
         return [
             [['id'], 'integer'],
-            [['platform', 'account_number', 'phone_number', 'additional_phone_number', 'first_name', 'last_name', 'patronymic', 'birthday', 'address', 'skype', 'team_viewer', 'status', 'additional_info'], 'safe'],
+            [['platform', 'account_number', 'phone_number', 'additional_phone_number', 'first_name', 'last_name', 'patronymic', 'birthday', 'address', 'skype', 'team_viewer', 'status', 'filter', 'additional_info'], 'safe'],
         ];
     }
 
@@ -62,6 +62,7 @@ class ClientsSearch extends Clients
             ->andFilterWhere(['like', 'skype', $this->skype])
             ->andFilterWhere(['like', 'team_viewer', $this->team_viewer])
             ->andFilterWhere(['like', 'status', $this->status])
+            ->andFilterWhere(['like', 'filter', $this->filter])
             ->andFilterWhere(['like', 'additional_info', $this->additional_info]);
 
         $query->andWhere(['user_id' => Yii::$app->user->identity->getId()]);
