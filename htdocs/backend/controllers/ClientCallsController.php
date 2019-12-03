@@ -81,17 +81,17 @@ class ClientCallsController extends Controller
                     Yii::$app->session->setFlash('success', 'Звонок добавлен');
 
                     return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
+                } else {
+                    return [
+                        'title'=> "Новый звонок",
+                        'content'=>$this->renderAjax('create', [
+                            'model' => $model,
+                        ]),
+                        'footer'=> Html::button('Закрыть',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                            Html::button('Сохранить',['class'=>'btn btn-primary','type'=>"submit"])
+
+                    ];
                 }
-            }else{           
-                return [
-                    'title'=> "Новый звонок",
-                    'content'=>$this->renderAjax('create', [
-                        'model' => $model,
-                    ]),
-                    'footer'=> Html::button('Закрыть',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Сохранить',['class'=>'btn btn-primary','type'=>"submit"])
-        
-                ];         
             }
         }else{
             if ($model->load($request->post()) && $model->save()) {
@@ -118,7 +118,7 @@ class ClientCallsController extends Controller
                         'model' => $model,
                     ]),
                     'footer'=> Html::button('Закрыть',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('СОхранить',['class'=>'btn btn-primary','type'=>"submit"])
+                                Html::button('Сохранить',['class'=>'btn btn-primary','type'=>"submit"])
                 ];         
             }else if($model->load($request->post())){
                 $model->date = date('Y-m-d', strtotime($model->date));
@@ -126,16 +126,16 @@ class ClientCallsController extends Controller
                     Yii::$app->session->setFlash('success', 'Сохранено');
 
                     return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
+                } else {
+                    return [
+                        'title'=> "Звонок ID: ".$id,
+                        'content'=>$this->renderAjax('update', [
+                            'model' => $model,
+                        ]),
+                        'footer'=> Html::button('Закрыть',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                            Html::button('Сохранить',['class'=>'btn btn-primary','type'=>"submit"])
+                    ];
                 }
-            }else{
-                 return [
-                    'title'=> "Звонок ID: ".$id,
-                    'content'=>$this->renderAjax('update', [
-                        'model' => $model,
-                    ]),
-                    'footer'=> Html::button('Закрыть',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Сохранить',['class'=>'btn btn-primary','type'=>"submit"])
-                ];        
             }
         }else{
             if ($model->load($request->post()) && $model->save()) {

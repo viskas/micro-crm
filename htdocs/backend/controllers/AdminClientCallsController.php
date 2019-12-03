@@ -118,7 +118,7 @@ class AdminClientCallsController extends Controller
                         'model' => $model,
                     ]),
                     'footer'=> Html::button('Закрыть',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                        Html::button('СОхранить',['class'=>'btn btn-primary','type'=>"submit"])
+                        Html::button('Сохранить',['class'=>'btn btn-primary','type'=>"submit"])
                 ];
             }else if($model->load($request->post())){
                 $model->date = date('Y-m-d', strtotime($model->date));
