@@ -58,7 +58,7 @@ jQuery(function($){
 
     setInterval(function() {
         noty();
-    }, 30000);
+    }, 1000 * 60 * 20); //20 minutes
 
     function noty() {
         $.ajax({
