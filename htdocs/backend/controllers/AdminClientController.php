@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use common\models\ClientCalls;
 use common\models\ClientComments;
+use common\models\User;
 use Yii;
 use common\models\Clients;
 use backend\models\AdminClientsSearch;
@@ -89,6 +90,55 @@ class AdminClientController extends Controller
             'calls' => $calls,
             'comments' => $comments,
         ]);
+    }
+
+    public function actionUpdate($id)
+    {
+        $request = Yii::$app->request;
+        $model = $this->findModel($id);
+
+        $users = User::find()
+            ->select(['id', 'first_name'])
+            ->where(['status' => User::STATUS_ACTIVE])
+            ->all();
+        $users = ArrayHelper::map($users, 'id', 'first_name');
+
+        if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            if($request->isGet){
+                return [
+                    'title'=> "Редактирование ID: ".$id,
+                    'content'=>$this->renderAjax('update', [
+                        'users' => $users,
+                        'model' => $model,
+                    ]),
+                    'footer'=> Html::button('Закрыть',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                        Html::button('Сохранить',['class'=>'btn btn-primary','type'=>"submit"])
+                ];
+            }else if($model->load($request->post()) && $model->save()){
+                Yii::$app->session->setFlash('success', 'Сохранено');
+
+                return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
+            }else{
+                return [
+                    'title'=> "Редактирование ID: ".$id,
+                    'content'=>$this->renderAjax('update', [
+                        'users' => $users,
+                        'model' => $model,
+                    ]),
+                    'footer'=> Html::button('Закрыть',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
+                        Html::button('Сохранить',['class'=>'btn btn-primary','type'=>"submit"])
+                ];
+            }
+        }else{
+            if ($model->load($request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
+        }
     }
 
     public function actionDelete($id)

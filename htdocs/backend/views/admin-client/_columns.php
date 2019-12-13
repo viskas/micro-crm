@@ -95,7 +95,7 @@ return [
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,
         'width' => '100px',
-        'template' => '{view} {delete}',
+        'template' => '{view} {update} {delete}',
         'vAlign'=>'middle',
         'urlCreator' => function($action, $model, $key, $index) { 
                 return Url::to([$action,'id'=>$key]);
