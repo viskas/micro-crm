@@ -12,6 +12,13 @@ return [
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
+        'attribute'=>'user_id',
+        'value' => function ($model) {
+            return $model->user->first_name . ' ('.$model->user->email.')';
+        }
+    ],
+    [
+        'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'file',
         'format' => 'raw',
         'value' => function ($model) {

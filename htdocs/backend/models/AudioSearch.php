@@ -19,7 +19,7 @@ class AudioSearch extends Audio
     {
         return [
             [['id'], 'integer'],
-            [['title', 'description'], 'safe'],
+            [['title', 'description', 'user_id'], 'safe'],
         ];
     }
 
@@ -40,7 +40,14 @@ class AudioSearch extends Audio
      */
     public function search($params)
     {
-        $query = Audio::find();
+        $userId = Yii::$app->user->identity->getId();
+
+        $role = AuthAssignment::find()
+            ->where(['user_id' => $userId])
+            ->one();
+
+        $query = Audio::find()
+            ->joinWith(['user']);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -58,12 +65,17 @@ class AudioSearch extends Audio
         }
 
         $query->andFilterWhere([
-            'id' => $this->id,
-            'created_at' => $this->created_at,
+            'audio.id' => $this->id,
+            'audio.created_at' => $this->created_at,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'description', $this->description]);
+        $query->andFilterWhere(['like', 'audio.title', $this->title])
+            ->andFilterWhere(['like', 'audio.description', $this->description])
+            ->andFilterWhere(['like', 'user.first_name', $this->user_id]);
+
+        if ($role->item_name != 'Администратор') {
+            $query->andWhere(['user_id' => $userId]);
+        }
 
         return $dataProvider;
     }

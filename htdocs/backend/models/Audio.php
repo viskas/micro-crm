@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use common\models\User;
 use Yii;
 
 /**
@@ -31,6 +32,7 @@ class Audio extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['user_id'], 'required'],
             [['description'], 'string'],
             [['created_at'], 'safe'],
             [['title', 'file'], 'string', 'max' => 255],
@@ -45,11 +47,17 @@ class Audio extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'user_id' => 'Пользователь',
             'title' => 'Заголовок',
             'description' => 'Описание',
             'file' => 'Файл',
             'audio' => 'Файл',
             'created_at' => 'Дата создания',
         ];
+    }
+
+    public function getUser()
+    {
+        return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 }
