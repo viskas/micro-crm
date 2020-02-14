@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Ноя 26 2019 г., 21:49
+-- Время создания: Фев 14 2020 г., 12:18
 -- Версия сервера: 5.7.19
 -- Версия PHP: 7.1.7
 
@@ -21,6 +21,20 @@ SET time_zone = "+00:00";
 --
 -- База данных: `crm`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `audio`
+--
+
+CREATE TABLE `audio` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `description` text,
+  `file` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -168,6 +182,7 @@ CREATE TABLE `clients` (
   `team_viewer` varchar(255) DEFAULT NULL,
   `is_verified` int(11) DEFAULT '0',
   `status` varchar(40) NOT NULL,
+  `filter` varchar(255) DEFAULT NULL,
   `additional_info` text,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -176,9 +191,9 @@ CREATE TABLE `clients` (
 -- Дамп данных таблицы `clients`
 --
 
-INSERT INTO `clients` (`id`, `user_id`, `platform`, `account_number`, `phone_number`, `additional_phone_number`, `first_name`, `last_name`, `patronymic`, `birthday`, `address`, `skype`, `team_viewer`, `is_verified`, `status`, `additional_info`, `created_at`) VALUES
-(2, 2, 'Uxool', '6574859', '+7 912 567-48-95', '+7 912 657-48-95', 'Владимир', 'Кенза', 'Петрович', '2014-11-20', '', 'inokentiy', '769856896', 1, 'В работе', 'Клиент с очень большими деньгами', '2019-11-22 00:20:46'),
-(3, 1, 'Uxool', '64275', '+791276895476', '', 'Иван', 'Самодин', '', NULL, '', 'vanyas', '', 0, 'В разработке', '', '2019-11-23 14:35:40');
+INSERT INTO `clients` (`id`, `user_id`, `platform`, `account_number`, `phone_number`, `additional_phone_number`, `first_name`, `last_name`, `patronymic`, `birthday`, `address`, `skype`, `team_viewer`, `is_verified`, `status`, `filter`, `additional_info`, `created_at`) VALUES
+(2, 2, 'Uxool', '6574859', '+7 912 567-48-95', '+7 912 657-48-95', 'Владимир', 'Кенза', 'Петрович', '2014-11-20', '', 'inokentiy', '769856896', 1, 'В работе', 'тест', 'Клиент с очень большими деньгами', '2019-11-22 00:20:46'),
+(3, 1, 'Uxool', '64275', '+791276895476', '', 'Иван', 'Самодин', '', NULL, '', 'vanyas', '', 0, 'В разработке', '', '', '2019-11-23 14:35:40');
 
 -- --------------------------------------------------------
 
@@ -211,9 +226,10 @@ INSERT INTO `client_calls` (`id`, `client_id`, `date`, `time`, `comment`, `statu
 (13, 2, '2019-11-25', '18:45', '', 1, '2019-11-25 17:44:30'),
 (14, 2, '2019-11-25', '19:45', '123', 1, '2019-11-25 17:45:30'),
 (15, 2, '2019-11-25', '20:21', '', 1, '2019-11-25 17:48:36'),
-(16, 2, '2019-11-25', '11:00', '', 0, '2019-11-25 18:45:01'),
-(17, 2, '2019-11-25', '23:30', '', 0, '2019-11-25 18:45:18'),
-(18, 2, '2019-11-30', '11:00', '', 0, '2019-11-26 17:48:29');
+(16, 2, '2019-11-25', '11:00', '', 1, '2019-11-25 18:45:01'),
+(17, 2, '2019-11-25', '23:30', '', 1, '2019-11-25 18:45:18'),
+(18, 2, '2019-11-30', '11:00', '', 1, '2019-11-26 17:48:29'),
+(24, 2, '2019-12-03', '11:20', '', 1, '2019-12-03 16:20:19');
 
 -- --------------------------------------------------------
 
@@ -554,7 +570,9 @@ INSERT INTO `message` (`id`, `language`, `hash`, `translation`) VALUES
 (5, 'ru', '', NULL),
 (5, 'us', '', NULL),
 (6, 'ru', '', NULL),
-(6, 'us', '', NULL);
+(6, 'us', '', NULL),
+(7, 'ru', '', NULL),
+(7, 'us', '', NULL);
 
 -- --------------------------------------------------------
 
@@ -605,7 +623,8 @@ INSERT INTO `source_message` (`id`, `hash`, `category`, `message`, `location`) V
 (3, '', 'app', 'First name', NULL),
 (4, '', 'app', 'Last name', NULL),
 (5, '', 'app', 'Email', NULL),
-(6, '', 'app', 'Выберите пользователя...', NULL);
+(6, '', 'app', 'Выберите пользователя...', NULL),
+(7, '', 'app', 'Обновить', NULL);
 
 -- --------------------------------------------------------
 
@@ -619,6 +638,13 @@ CREATE TABLE `tg_notify` (
   `user_id` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `tg_notify`
+--
+
+INSERT INTO `tg_notify` (`id`, `chat_id`, `user_id`, `created_at`) VALUES
+(1, '321574692', 2, '2019-11-26 19:20:50');
 
 -- --------------------------------------------------------
 
@@ -654,6 +680,12 @@ INSERT INTO `user` (`id`, `first_name`, `last_name`, `username`, `auth_key`, `se
 --
 -- Индексы сохранённых таблиц
 --
+
+--
+-- Индексы таблицы `audio`
+--
+ALTER TABLE `audio`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Индексы таблицы `auth_assignment`
@@ -755,6 +787,11 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT для таблицы `audio`
+--
+ALTER TABLE `audio`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+--
 -- AUTO_INCREMENT для таблицы `clients`
 --
 ALTER TABLE `clients`
@@ -763,7 +800,7 @@ ALTER TABLE `clients`
 -- AUTO_INCREMENT для таблицы `client_calls`
 --
 ALTER TABLE `client_calls`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 --
 -- AUTO_INCREMENT для таблицы `client_comments`
 --
@@ -783,12 +820,12 @@ ALTER TABLE `languages`
 -- AUTO_INCREMENT для таблицы `source_message`
 --
 ALTER TABLE `source_message`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT для таблицы `tg_notify`
 --
 ALTER TABLE `tg_notify`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT для таблицы `user`
 --

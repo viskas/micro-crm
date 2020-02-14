@@ -44,6 +44,7 @@ $missedCalls = $missedCallsBadge == 0 ? '' : '<span class="pull-right-container"
                 ['label' => 'Клиенты', 'icon' => 'id-card-o', 'url' => ['/admin-client/index']],
                 $is_manager ? ['label' => 'Мои звонки '.$calls, 'icon' => 'phone', 'url' => ['/client-calls/index']] : [],
                 ['label' => 'Звонки', 'icon' => 'phone', 'url' => ['/admin-client-calls/index']],
+                ['label' => 'Записи звонков', 'icon' => 'file-audio-o', 'url' => ['/audio/index']],
             ];
 
             $menuItems = Helper::filter($menuItems);
